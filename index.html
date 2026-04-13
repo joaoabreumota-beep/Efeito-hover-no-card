@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Três Papéis | Posição Horizontal (lado a lado) em Losango</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 25% 35%, #1a2c2f, #0a1017);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Inter', 'Poppins', system-ui, sans-serif;
+            padding: 1.5rem;
+        }
+
+        /* Container com vidro fosco */
+        .glass-frame {
+            background: rgba(20, 28, 34, 0.45);
+            backdrop-filter: blur(5px);
+            border-radius: 84px;
+            padding: 30px 34px;
+            box-shadow: 0 30px 45px -15px rgba(0, 0, 0, 0.6);
+            transition: all 0.2s;
+        }
+
+        /* Círculo externo com gradiente suave */
+        .outer-circle {
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(ellipse at 40% 35%, #fff7ea, #f2e2ca);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 35px 50px -12px rgba(0, 0, 0, 0.55), inset 0 2px 6px rgba(255, 248, 210, 0.9);
+            position: relative;
+        }
+
+        /* Anel interno para profundidade */
+        .inner-ring {
+            width: 92%;
+            height: 92%;
+            background: #fffcf6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 8px 20px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(255, 245, 180, 0.7);
+        }
+
+        /* Container que abriga os três papéis em posição horizontal */
+        .horizontal-stack {
+            position: relative;
+            width: 400px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Estilo base do papel: formato losango (rotate 45deg) */
+        .paper {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: #fffbf0;
+            transform: rotate(45deg);
+            border-radius: 22px;
+            transition: all 0.3s cubic-bezier(0.2, 0.85, 0.4, 1.05);
+            cursor: default;
+            border: 1px solid rgba(230, 205, 145, 0.85);
+            box-shadow: 0 16px 28px -10px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Textura suave de papel artesanal */
+        .paper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(252, 245, 215, 0.6) 0%, rgba(245, 230, 180, 0.2) 50%, rgba(240, 218, 155, 0.2) 100%);
+            border-radius: 22px;
+            pointer-events: none;
+        }
+
+        /* Linhas diagonais simulando fibras de papel */
+        .paper::after {
+            content: "";
+            position: absolute;
+            top: 12%;
+            left: 12%;
+            width: 76%;
+            height: 76%;
+            background: repeating-linear-gradient(115deg, rgba(130, 100, 55, 0.05) 0px, rgba(130, 100, 55, 0.05) 2px, transparent 2px, transparent 10px);
+            border-radius: 14px;
+            pointer-events: none;
+        }
+
+        /* 
+            POSIÇÃO HORIZONTAL: lado a lado
+            Agora os papéis são distribuídos no eixo X (translateX)
+            Todos com o mesmo translateY (0) para ficarem alinhados horizontalmente.
+            Espaçamento visível entre cada um.
+        */
+
+        /* Papel da esquerda (primeiro) */
+        .paper-left {
+            transform: rotate(45deg) translateX(-82px) translateY(0px);
+            z-index: 3;
+            background: #fffef8;
+            box-shadow: 0 20px 32px -10px rgba(0, 0, 0, 0.4), inset 0 1px 3px rgba(255, 250, 200, 0.9);
+        }
+
+        /* Papel central (segundo) */
+        .paper-center {
+            transform: rotate(45deg) translateX(0px) translateY(0px);
+            z-index: 2;
+            background: #fef8ec;
+            box-shadow: 0 16px 26px -8px rgba(0, 0, 0, 0.32), inset 0 1px 2px rgba(250, 240, 190, 0.7);
+        }
+
+        /* Papel da direita (terceiro) */
+        .paper-right {
+            transform: rotate(45deg) translateX(82px) translateY(0px);
+            z-index: 1;
+            background: #fdf4e4;
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Efeito hover: pequena expansão para destacar a disposição horizontal */
+        .outer-circle:hover .paper-left {
+            transform: rotate(45deg) translateX(-88px) translateY(0px);
+            box-shadow: 0 26px 38px -12px rgba(0, 0, 0, 0.45);
+        }
+
+        .outer-circle:hover .paper-center {
+            transform: rotate(45deg) translateX(0px) translateY(-2px);
+            box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.38);
+        }
+
+        .outer-circle:hover .paper-right {
+            transform: rotate(45deg) translateX(88px) translateY(0px);
+            box-shadow: 0 16px 28px -8px rgba(0, 0, 0, 0.36);
+        }
+
+        /* Elemento decorativo central (opcional) */
+        .center-marker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #f3e5ca, #e8cf9c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            font-weight: 500;
+            color: #a0743a;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 3px #fff9e0;
+            backdrop-filter: blur(2px);
+            font-family: monospace;
+            z-index: 10;
+            pointer-events: none;
+            border: 1px solid #fbefcf;
+        }
+
+        /* Legenda explicativa com destaque para alinhamento horizontal */
+        .info-legend {
+            text-align: center;
+            margin-top: 32px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #f7efde;
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: baseline;
+            gap: 14px;
+            border: 1px solid rgba(235, 200, 120, 0.5);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .badge-horizontal {
+            background: #2a241bb3;
+            border-radius: 36px;
+            padding: 5px 16px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-horizontal span {
+            font-size: 1rem;
+        }
+
+        .position-note {
+            position: absolute;
+            bottom: -38px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            padding: 4px 14px;
+            border-radius: 40px;
+            color: #fbefcf;
+            white-space: nowrap;
+            font-weight: 400;
+            border: 1px solid #dbba7a;
+            pointer-events: none;
+            z-index: 12;
+        }
+
+        /* Responsividade: ajustar distâncias horizontais para telas menores */
+        @media (max-width: 580px) {
+            .outer-circle {
+                width: 400px;
+                height: 400px;
+            }
+            .horizontal-stack {
+                width: 340px;
+                height: 180px;
+            }
+            .paper {
+                width: 125px;
+                height: 125px;
+                border-radius: 18px;
+            }
+            .paper-left {
+                transform: rotate(45deg) translateX(-66px) translateY(0px);
+            }
+            .paper-center {
+                transform: rotate(45deg) translateX(0px) translateY(0px);
+            }
+            .paper-right {
+                transform: rotate(45deg) translateX(66px) translateY(0px);
+            }
+            .center-marker {
+                width: 42px;
+                height: 42px;
+                font-size: 1.4rem;
+            }
+            .info-legend {
+                font-size: 0.8rem;
+                padding: 8px 20px;
+                gap: 8px;
+            }
+            .badge-horizontal {
+                padding: 3px 12px;
+                font-size: 0.7rem;
+            }
+            .position-note {
+                font-size: 10px;
+                bottom: -32px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 460px) {
+            .outer-circle {
+                width: 330px;
+                height: 330px;
+            }
+            .horizontal-stack {
+                width: 280px;
+                height: 150px;
+            }
+            .paper {
+                width: 105px;
+                height: 105px;
+                border-radius: 16px;
+            }
+            .paper-left {
+                transform: rotate(45deg) translateX(-54px) translateY(0px);
+            }
+            .paper-center {
+                transform: rotate(45deg) translateX(0px) translateY(0px);
+            }
+            .paper-right {
+                transform: rotate(45deg) translateX(54px) translateY(0px);
+            }
+            .center-marker {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+            .info-legend {
+                font-size: 0.7rem;
+                padding: 6px 14px;
+            }
+            .badge-horizontal {
+                font-size: 0.6rem;
+                padding: 2px 8px;
+            }
+            .position-note {
+                font-size: 9px;
+                bottom: -28px;
+            }
+        }
+
+        /* Brilho decorativo no círculo */
+        .outer-circle::before {
+            content: "";
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 235, 170, 0.25) 0%, rgba(200, 165, 90, 0) 80%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .footnote {
+            position: absolute;
+            bottom: -58px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10px;
+            color: #dac194;
+            opacity: 0.7;
+            font-style: italic;
+            pointer-events: none;
+        }
+
+        .flex-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-wrapper">
+    <div class="glass-frame">
+        <div class="outer-circle">
+            <div class="inner-ring">
+                <div class="horizontal-stack">
+                    <!-- TRÊS PAPÉIS EM POSIÇÃO HORIZONTAL: LADO A LADO
+                         Todos com translateY = 0 (mesma altura)
+                         Distribuídos no eixo X com espaçamento igual e visível -->
+                    <div class="paper paper-left"></div>
+                    <div class="paper paper-center"></div>
+                    <div class="paper paper-right"></div>
+                    <!-- Elemento decorativo central -->
+                    <div class="center-marker">⬟</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-legend">
+        <span>📄✨ TRÊS PAPÉIS EM LOSANGO ✨📄</span>
+        <div class="badge-horizontal">
+            <span>⬅️ ➡️</span> POSIÇÃO HORIZONTAL (LADO A LADO)
+        </div>
+        <div class="badge-horizontal">
+            <span>📏</span> ESPAÇAMENTO VISÍVEL ENTRE ELES
+        </div>
+    </div>
+    <div class="position-note">
+        🧩 alinhamento puramente horizontal → translateY = 0 | translateX variável: -82px , 0 , +82px
+    </div>
+    <div class="footnote">
+        * mesma coordenada Y | diferença uniforme em X para camadas lado a lado
+    </div>
+</div>
+</body>
+</html>
